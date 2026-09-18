@@ -1,0 +1,100 @@
+/* GSB v2 - Styles communs */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #1a1a1a; line-height: 1.5; }
+
+/* Header top (barre grise) */
+.header-top { background: #4a4a4a; color: #fff; padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+.header-top .logo { font-weight: 700; font-size: 1.1rem; }
+.header-top .user { font-size: 0.95rem; cursor: pointer; }
+.header-top .user::after { content: ' ▼'; font-size: 0.75rem; }
+
+/* Page connexion : header "Galaxy Swiss Bourdin" uniquement */
+.header-simple { background: #6b6b6b; color: #fff; padding: 1rem 1.5rem; }
+.header-simple .logo { font-weight: 600; font-size: 1.1rem; }
+
+/* Nav principale (onglets) */
+.nav-main { background: #fff; border-bottom: 1px solid #ddd; padding: 0 1.5rem; display: flex; gap: 0; max-width: 960px; margin: 0 auto; }
+.nav-main a { display: inline-block; padding: 0.9rem 1.25rem; text-decoration: none; color: #1a1a1a; font-weight: 500; font-size: 0.95rem; border: 1px solid #ccc; border-bottom: none; margin-bottom: -1px; background: #fff; }
+.nav-main a:hover { background: #f5f5f5; }
+.nav-main a.active { background: #5a5a5a; color: #fff; border-color: #5a5a5a; }
+
+/* Contenu principal */
+.main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+
+/* Titres */
+.page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+.page-subtitle { font-size: 0.95rem; color: #555; margin-bottom: 1.25rem; }
+.section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+
+/* Bouton orange */
+.btn-orange { background: #e85d04; color: #fff; border: none; padding: 0.65rem 1.25rem; font-weight: 600; font-size: 0.95rem; cursor: pointer; border-radius: 4px; text-decoration: none; display: inline-block; }
+.btn-orange:hover { background: #cf5303; }
+
+/* Boutons gris */
+.btn-grey { background: #5a5a5a; color: #fff; border: none; padding: 0.6rem 1.25rem; font-weight: 500; cursor: pointer; border-radius: 4px; text-decoration: none; display: inline-block; }
+.btn-grey-light { background: #ccc; color: #1a1a1a; border: 1px solid #999; }
+.btn-grey:hover, .btn-grey-light:hover { opacity: 0.9; }
+
+/* Select / filtre */
+select { padding: 0.5rem 2rem 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; background: #fff; cursor: pointer; }
+
+/* Tables */
+.table-wrap { width: 100%; overflow-x: auto; margin-bottom: 1.5rem; border: 1px solid #ddd; border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 0.65rem 0.9rem; text-align: left; border-bottom: 1px solid #e5e5e5; }
+th { background: #4a4a4a; color: #fff; font-weight: 600; font-size: 0.9rem; }
+tbody tr { background: #fff; }
+tbody tr:nth-child(even) { background: #fafafa; }
+tbody tr:hover { background: #f5f5f5; }
+td.num { text-align: right; }
+tr.total-row { background: #e0f4ff !important; font-weight: 600; border-top: 2px solid #4a4a4a; }
+
+/* Badges état */
+.badge { display: inline-block; padding: 0.2rem 0.5rem; font-size: 0.75rem; font-weight: 700; border-radius: 3px; margin-right: 0.35rem; }
+.badge-cr { background: #7eb8da; color: #fff; }
+.badge-cl { background: #90ee90; color: #1a1a1a; }
+
+/* Bloc détail (fond beige) */
+.detail-box { background: #f8f8f0; border: 1px solid #ddd; border-radius: 6px; padding: 1.25rem; margin-top: 1.5rem; }
+.detail-box .section-title { margin-bottom: 0.75rem; }
+
+/* Bloc accueil (bordure en pointillés) */
+.welcome-box { border: 2px dashed #bbb; background: #f5f5f5; border-radius: 8px; padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+.welcome-avatar { width: 80px; height: 80px; border: 2px solid #999; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.welcome-avatar .icon { width: 24px; height: 32px; background: #999; }
+.welcome-text h2 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+.welcome-text p { font-size: 0.9rem; color: #555; }
+
+/* Barre titre + filtre + bouton */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.toolbar .page-title { margin-bottom: 0; margin-right: auto; }
+
+    
+/* Footer */
+.footer {background: linear-gradient(to right, #003366, #0055aa); padding: 2rem 1.5rem; margin-top: 2rem; }
+.footer-inner { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.footer h4 { font-size: 0.95rem; margin-bottom: 0.75rem; }
+.footer .placeholder { height: 4px; background: linear-gradient(to right, #003366, #0055aa); margin-bottom:  0.5rem; border-radius: 2px; width: 80%; }
+.footer .copyright { grid-column: 1 / -1; text-align: center; font-size: 0.85rem; color: #aaa; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #555; }
+
+/* Page connexion : bloc central */
+.login-page { min-height: 100vh; display: flex; flex-direction: column; }
+.login-page .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.login-block { width: 100%; max-width: 640px; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #fff; display: flex; }
+.login-block-left { width: 45%; background: #e8e8e8; border-right: 2px dashed #999; display: flex; align-items: center; justify-content: center; min-height: 280px; }
+.login-block-left .circle { width: 120px; height: 120px; border: 2px solid #333; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+.login-block-left .circle .icon { width: 20px; height: 28px; background: #333; }
+.login-block-right { width: 55%; padding: 2rem; }
+.login-block-right h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+.login-block-right .subtitle { font-size: 0.9rem; color: #555; margin-bottom: 1.5rem; }
+.login-form .field { margin-bottom: 1rem; }
+.login-form label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: #333; }
+.login-form input { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid #999; border-radius: 4px; font-size: 1rem; background: #f0f0f0; }
+.login-form .btn-submit { width: 100%; padding: 0.75rem; background: #5a5a5a; color: #fff; border: 1px solid #333; font-weight: 600; font-size: 1rem; cursor: pointer; border-radius: 4px; margin-top: 0.5rem; }
+.login-form .btn-submit:hover { background: #4a4a4a; }
+.login-form .forgot { display: block; margin-top: 1rem; font-size: 0.9rem; color: #0066cc; text-decoration: underline; }
+
+/* Utilitaires */
+.flex { display: flex; align-items: center; gap: 0.5rem; }
+.mt-1 { margin-top: 1rem; }
+.text-right { text-align: right; }

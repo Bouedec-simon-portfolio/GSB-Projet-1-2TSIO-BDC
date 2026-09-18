@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentions légales - GSB</title>
+    <link rel="stylesheet" href="¨gsb.css">
+</head>
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="logo">
+            <h1>GSB</h1>
+            <span>Galaxy Swiss Bourdin</span>
+        </div>
+    </div>
+</header>
+
+<section class="container" style="padding:60px 0;">
+    <h2>Mentions légales</h2>
+    <p>
+        Société Galaxy Swiss Bourdin<br>
+        Siège social : Philadelphie, Pennsylvanie, États-Unis<br>
+        Entreprise privée détenue par des actionnaires.<br>
+    </p>
+
+    <p>
+        Responsable de publication : Direction Générale GSB.<br>
+        Hébergement : Serveur interne entreprise.
+    </p>
+
+    <p>
+        Conformément aux réglementations en vigueur, les données collectées
+        via le formulaire de contact ne sont pas conservées sans consentement.
+    </p>
+</section>
+
+<footer>
+    <div class="container">
+        <p>© 2024 Galaxy Swiss Bourdin</p>
+    </div>
+</footer>
+
+</body>
+</html>
