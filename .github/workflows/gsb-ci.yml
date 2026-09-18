@@ -1,0 +1,63 @@
+name: GSB CodeIgniter checks
+on:
+  push:
+    branches: [migration-codeigniter-lamp]
+  pull_request:
+    paths: ['GSB-CodeIgniter/**', '.github/workflows/gsb-ci.yml']
+permissions:
+  contents: read
+jobs:
+  php-and-http:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ephemeral-ci-only
+          MARIADB_DATABASE: gsb_test
+          MARIADB_USER: gsb_test
+          MARIADB_PASSWORD: ephemeral-ci-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    defaults:
+      run:
+        working-directory: GSB-CodeIgniter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, mbstring, mysqli
+          tools: composer
+      - run: composer install --no-dev --prefer-dist --no-interaction
+      - run: find app tests -name '*.php' -print0 | xargs -0 -n1 php -l
+      - run: php tests/rules.php
+      - name: Prepare isolated fixtures
+        run: |
+          cat > .env <<'ENV'
+          CI_ENVIRONMENT = testing
+          app.baseURL = 'http://127.0.0.1:8080/'
+          app.indexPage = ''
+          database.default.hostname = 127.0.0.1
+          database.default.database = gsb_test
+          database.default.username = gsb_test
+          database.default.password = ephemeral-ci-only
+          database.default.DBDriver = MySQLi
+          database.default.port = 3306
+          ENV
+          php tests/fixtures.php
+      - name: HTTP integration
+        env:
+          GSB_TEST_PASSWORD: ephemeral-test-Password-123
+          TZ: Europe/Paris
+        run: |
+          CI_ENVIRONMENT=production php spark serve --host 127.0.0.1 --port 8080 > /tmp/gsb-server.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8080/connexion >/dev/null && break; sleep 1; done
+          python3 tests/http_smoke.py
+      - name: Server logs on failure
+        if: failure()
+        run: |
+          cat /tmp/gsb-server.log || true
+          cat writable/logs/log-*.log || true
