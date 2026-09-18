@@ -37,7 +37,7 @@ jobs:
       - name: Prepare isolated fixtures
         run: |
           cat > .env <<'ENV'
-          CI_ENVIRONMENT = testing
+          CI_ENVIRONMENT = production
           app.baseURL = 'http://127.0.0.1:8080/'
           app.indexPage = ''
           database.default.hostname = 127.0.0.1
