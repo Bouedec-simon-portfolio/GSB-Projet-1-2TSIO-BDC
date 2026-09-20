@@ -16,7 +16,7 @@ if sudo test -e "$GSB_TARGET" || sudo test -e /etc/apache2/sites-available/gsb-c
   echo 'Installation déjà présente : arrêt sans écrasement. Consulter docs/INSTALLATION.md.' >&2; exit 1
 fi
 sudo apt-get update
-sudo apt-get install -y apache2 mariadb-server php libapache2-mod-php php-cli php-mysql php-intl php-mbstring php-xml php-curl php-zip composer unzip rsync openssl
+sudo apt-get install -y apache2 mariadb-server php libapache2-mod-php php-cli php-mysql php-intl php-mbstring php-xml php-curl php-zip composer unzip rsync openssl curl
 php -r 'exit(version_compare(PHP_VERSION,"8.2.0",">=") ? 0 : 1);' || { echo 'PHP 8.2 minimum requis.' >&2; exit 1; }
 sudo systemctl enable --now mariadb apache2
 if [[ $(sudo mariadb -Nse "SELECT COUNT(*) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='gsb_ci'") != 0 ]] || [[ $(sudo mariadb -Nse "SELECT COUNT(*) FROM mysql.user WHERE User='gsb_ci'") != 0 ]]; then

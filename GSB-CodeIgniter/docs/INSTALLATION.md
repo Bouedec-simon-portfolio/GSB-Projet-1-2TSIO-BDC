@@ -29,6 +29,12 @@ cd GSB-Projet-1-2TSIO-BDC/GSB-CodeIgniter
 ```
 Si sudo n'est pas installé ou votre compte n'y a pas accès, l'administrateur de la VM doit installer sudo et autoriser votre compte ; se reconnecter ensuite. Ne pas publier de jeton GitHub pour contourner un problème de clone privé.
 
+Avant d’installer, depuis GSB-CodeIgniter :
+```bash
+bash deploy/preflight-debian.sh
+```
+Ce diagnostic ne modifie pas la VM et n’affiche pas les mots de passe. Il signale Debian, les interfaces réseau, la route IPv4, le DNS, sudo, une installation existante et le port 8080. Corriger les points signalés avant de continuer. L’absence de PHP à ce stade est normale : l’installateur le fournira. Une résolution DNS réussie ne suffit pas à prouver l’accès à APT ou Composer.
+
 ## 3 Installer LAMP et GSB
 Remplacer l'IP par celle que Windows peut joindre :
 ```bash
@@ -83,3 +89,7 @@ sudo systemctl reload apache2
 ## Anciennes données et serveur de l'établissement
 La base fournie est neuve. Pour récupérer vos anciennes données, exporter d'abord gsbV2 et vérifier les doublons de login, les mots de passe hachés et les contraintes. Ne pas exécuter l'ancien script GSB_V2.sql : il commence par DROP DATABASE.
 Pour H02, adapter avec l'enseignant le chemin, les droits, la base et l'URL : le script installe une VM dédiée, pas un serveur partagé d'établissement. L'application proposée en HTTP est destinée à une VM locale ; une exposition publique demande HTTPS et une configuration d'exploitation adaptée.
+
+## Ce que vérifie l’intégration automatisée
+Le workflow lance les parcours HTTP dans un conteneur Debian 12 avec Apache et PHP 8.2, relié à un service MariaDB de test. Il contrôle ensuite les lignes SQL enregistrées, la suppression et l’absence d’insertion invalide. Les fichiers privés doivent répondre 403 ou 404.
+Ce test ne lance pas install-debian.sh et ne remplace pas la recette du réseau, des droits sudo, du redémarrage et des services dans votre VM. Consulter le résultat GitHub Actions du commit testé avant d’en annoncer la réussite.

@@ -1,6 +1,6 @@
 # GSB sous CodeIgniter 4
 
-Application pédagogique de gestion des frais, issue du projet GSB de Simon Bouëdec.
+Application pédagogique de gestion des frais, issue du projet GSB de Simon Bouëdec, seul membre du groupe 7.
 Version préparée pour Debian LAMP. Lire **docs/INSTALLATION.md** en premier.
 
 ## Contenu
@@ -23,10 +23,11 @@ Il n'y a pas de vendor ni de composer.lock fourni tant que Composer n'a pas ét�
 Après la première installation réussie, conserver composer.lock dans Git pour figer aussi les dépendances transitives.
 
 ## Vérification
+`bash deploy/preflight-debian.sh` vérifie la préparation de la VM sans la modifier.
 `php tests/rules.php` vérifie les règles métier.
-`python3 tests/http_smoke.py` est un test HTTP d'intégration pour une base de test dédiée (voir le fichier et le workflow).
+Le workflow exécute `python3 tests/http_smoke.py` sous Apache dans un conteneur Debian, puis `php tests/assert_database.php` contrôle les mises à jour dans la base de test dédiée. Ces scripts ne doivent pas être lancés sur la base de travail.
 Consulter docs/RECETTE.md pour les scénarios et le statut réel des vérifications.
 
 ## Source et suivi
 Le dossier Site-GSB original est conservé. Le nouveau code se trouve dans GSB-CodeIgniter.
-Le dossier d'examen est une préparation à compléter après les tests dans la VM : captures d'écran, numéro de groupe, contributions réelles, résultats et dates.
+Le dossier d'examen est une préparation à compléter après les tests dans la VM : captures d'écran, résultats et dates. Le dossier initial reste distinct des preuves à produire en fin de projet.
