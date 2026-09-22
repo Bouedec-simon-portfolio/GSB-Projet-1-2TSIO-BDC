@@ -19,7 +19,9 @@ class CreateUser extends BaseCommand
         }
         $m = new VisiteurModel();
         if ($m->find($id) || $m->where('login',$login)->first()) { CLI::error('ID ou identifiant déjà utilisé.'); return EXIT_ERROR; }
-        $m->insert(['id'=>$id,'login'=>$login,'nom'=>$nom,'prenom'=>$prenom,'mdp'=>password_hash($password,PASSWORD_DEFAULT)]);
-        CLI::write('Compte créé.'); return EXIT_SUCCESS;
+        if ($m->insert(['id'=>$id,'login'=>$login,'nom'=>$nom,'prenom'=>$prenom,'mdp'=>password_hash($password,PASSWORD_DEFAULT)]) === false) {
+            CLI::error('Échec de création. Consultez les journaux du serveur.'); return EXIT_ERROR;
+        }
+        CLI::write('Compte créé. Utilisez votre identifiant pour vous connecter, pas votre ID.'); return EXIT_SUCCESS;
     }
 }
