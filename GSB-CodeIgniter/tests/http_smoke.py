@@ -16,7 +16,8 @@ class Client:
  def login(self,user):return self.post('connexion','connexion',{'login':user,'password':PWD})
 a=Client();assert a.req('fiches')[2].endswith('/connexion')
 assert a.post('connexion','connexion',{'login':'alice','password':'wrong'})[2].endswith('/connexion')
-assert a.login('alice')[2].endswith('/fiches')
+_,visitor_home,visitor_url=a.login('alice')
+assert visitor_url.endswith('/fiches') and '>Administration<' not in visitor_home
 month=datetime.datetime.now().strftime('%Y%m');page='fiches/'+month
 assert a.post('fiches','fiches',{})[0]==200
 assert a.post('fiches','fiches',{})[0]==200  # Créer deux fois ne doit pas dupliquer la fiche.
@@ -47,7 +48,9 @@ assert 'SANS TOKEN' not in a.req(page)[1]
 assert 'Consultation uniquement' in a.req('fiches/200001')[1]
 a.post('fiches/200001','fiches/200001/hors-forfait',{'date':'2000-01-01','libelle':'FERMEE','montant':'1'})
 assert 'FERMEE' not in a.req('fiches/200001')[1]
-ad=Client();ad.login('admin');assert ad.req('administration')[0]==200
+ad=Client();_,admin_home,admin_url=ad.login('admin')
+assert admin_url.endswith('/administration') and '>Mes fiches<' not in admin_home
+assert ad.req('administration')[0]==200
 assert a.post(page,'deconnexion',{})[2].endswith('/connexion')
 assert a.req(page)[2].endswith('/connexion')
 for private_path in ['.env','app/','database/schema.sql','composer.json']:
