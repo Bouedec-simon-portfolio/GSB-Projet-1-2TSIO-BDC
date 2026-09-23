@@ -20,7 +20,7 @@ Vérifications déjà observées sur GitHub Actions : installation Composer, syn
 | T12 | Modifier une fiche ancienne, future, CL, VA ou RB | Écriture refusée côté serveur | À exécuter |
 | T13 | Envoyer un POST sans jeton CSRF valide | Aucune modification enregistrée | À exécuter |
 | T14 | Saisir un libellé contenant une balise script | Texte échappé, aucun script exécuté | À exécuter |
-| T15 | Visiteur puis administrateur sur /administration | 403 pour le visiteur, liste pour a00 | À exécuter |
+| T15 | Connexion visiteur puis connexion administrateur | Le visiteur arrive sur ses fiches sans lien Administration ; a00 arrive directement sur la liste administrative | À exécuter |
 | T16 | Déconnexion puis accès à une ancienne URL | Nouvelle connexion exigée | À exécuter |
 | T17 | Recharger la page après un enregistrement | Pas de nouvel envoi du formulaire POST | À exécuter |
 | T18 | Contrôler les tables après chaque modification | Correspondance interface et lignes SQL | À exécuter |
