@@ -55,8 +55,7 @@ class Frais extends BaseController
     }
     public function admin()
     {
-        $ids = array_map('trim',explode(',', (string)env('gsb.adminIds','a00')));
-        if (!in_array($this->uid(),$ids,true)) return $this->response->setStatusCode(403)->setBody('Accès administrateur refusé.');
+        if (empty(session('user')['admin'])) return $this->response->setStatusCode(403)->setBody('Accès administrateur refusé.');
         return view('fiches/admin',['fiches'=>(new FicheModel())->allFiches()]);
     }
 }
