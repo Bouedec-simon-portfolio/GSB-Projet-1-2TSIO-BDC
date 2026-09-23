@@ -1,15 +1,15 @@
 # Organisation proposée
 
 Nom imposé : Gr_[numéro]_SLAM_[année]_PHP_MVC_[noms]. Renseigner les valeurs réelles avant de renommer le dépôt et le tableau.
-Partager avec le professeur selon les coordonnées de la consigne remise en cours. Aucun partage ni email n’a été effectué automatiquement.
+Partager selon la consigne avec tssiolapaix@outlook.fr ou tssiolapaixprofs sur GitHub. Aucun partage ni email n’a été effectué automatiquement.
 
 Listes : À faire, En cours, À tester, Terminé.
 Cartes proposées :
 - Vérifier réseau Debian et Internet ; responsable à affecter ; preuve : accès APT et test TCP Windows.
 - Installer LAMP et créer les comptes ; preuve : URL Apache et fiche créée.
 - Comprendre et adapter la connexion ; preuve : explication du contrôleur Auth.
-- Consulter les fiches ; membre A à désigner ; modèles, contrôleur, vues et tests d’isolation.
-- Saisir les frais ; membre B à désigner ; forfaits, hors forfait, contrôles et transactions.
+- Consulter les fiches ; Simon ; modèles, contrôleur, vues et tests d’isolation.
+- Saisir les frais ; Simon ; forfaits, hors forfait, contrôles et mises à jour de la base.
 - Réaliser la recette ; preuve : résultats datés et captures.
 - Compléter le dossier d’examen ; preuve : annexe, sommaire, schémas, SQL et recette.
 - Déployer sur H02 avec les paramètres fournis par le professeur.
