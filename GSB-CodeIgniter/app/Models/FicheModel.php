@@ -3,7 +3,6 @@ namespace App\Models;
 use CodeIgniter\Model;
 use App\Libraries\FraisRules;
 use InvalidArgumentException;
-use RuntimeException;
 class FicheModel extends Model
 {
     protected $table = 'FicheFrais';
@@ -19,7 +18,17 @@ class FicheModel extends Model
     }
     public function createFor(string $id): void
     {
-        $this->db->query('INSERT INTO FicheFrais (idVisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat) VALUES (?, ?, 0, 0, ?, ?) ON DUPLICATE KEY UPDATE mois = VALUES(mois)', [$id,date('Ym'),date('Y-m-d'),'CR']);
+        $month = date('Ym');
+        if ($this->fiche($id, $month)) return;
+
+        $this->db->table('FicheFrais')->insert([
+            'idVisiteur' => $id,
+            'mois' => $month,
+            'nbJustificatifs' => 0,
+            'montantValide' => 0,
+            'dateModif' => date('Y-m-d'),
+            'idEtat' => 'CR',
+        ]);
     }
     public function forfaits(string $id, string $month): array
     {
@@ -29,41 +38,37 @@ class FicheModel extends Model
     {
         return $this->db->table('LigneFraisHorsForfait')->where(['idVisiteur'=>$id,'mois'=>$month])->orderBy('date','DESC')->get()->getResultArray();
     }
-    /** Verrouiller la fiche évite une modification concurrente pendant le contrôle de son état. */
-    public function change(string $id, string $month, callable $operation): void
+    private function checkEditable(string $id, string $month): void
     {
-        $this->db->transBegin();
-        try {
-            $fiche = $this->db->query('SELECT * FROM FicheFrais WHERE idVisiteur = ? AND mois = ? FOR UPDATE', [$id,$month])->getRowArray();
-            if (!$fiche || !FraisRules::editable($month, $fiche['idEtat'])) throw new InvalidArgumentException('Cette fiche est absente ou fermée à la saisie.');
-            $operation($this->db);
-            $this->db->table('FicheFrais')->where(['idVisiteur'=>$id,'mois'=>$month])->update(['dateModif'=>date('Y-m-d')]);
-            if (!$this->db->transStatus()) throw new RuntimeException('Échec de la transaction.');
-            $this->db->transCommit();
-        } catch (\Throwable $e) {
-            $this->db->transRollback(); throw $e;
+        $fiche = $this->fiche($id, $month);
+        if (!$fiche || !FraisRules::editable($month, $fiche['idEtat'])) {
+            throw new InvalidArgumentException('Cette fiche est absente ou fermée à la saisie.');
         }
+    }
+    private function touch(string $id, string $month): void
+    {
+        $this->db->table('FicheFrais')->where(['idVisiteur'=>$id,'mois'=>$month])->update(['dateModif'=>date('Y-m-d')]);
     }
     public function saveForfaits(string $id, string $month, array $quantities): void
     {
-        $this->change($id,$month,static function($db) use ($id,$month,$quantities) {
-            foreach ($quantities as $code=>$quantity) {
-                $db->query('INSERT INTO LigneFraisForfait (idVisiteur,mois,idFraisForfait,quantite) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quantite = VALUES(quantite)', [$id,$month,$code,$quantity]);
-            }
-        });
+        $this->checkEditable($id, $month);
+        foreach ($quantities as $code=>$quantity) {
+            $this->db->query('INSERT INTO LigneFraisForfait (idVisiteur,mois,idFraisForfait,quantite) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quantite = VALUES(quantite)', [$id,$month,$code,$quantity]);
+        }
+        $this->touch($id, $month);
     }
     public function addLine(string $id, string $month, array $line): void
     {
-        $this->change($id,$month,static function($db) use ($id,$month,$line) {
-            $db->table('LigneFraisHorsForfait')->insert($line + ['idVisiteur'=>$id,'mois'=>$month]);
-        });
+        $this->checkEditable($id, $month);
+        $this->db->table('LigneFraisHorsForfait')->insert($line + ['idVisiteur'=>$id,'mois'=>$month]);
+        $this->touch($id, $month);
     }
     public function removeLine(string $id, string $month, int $line): void
     {
-        $this->change($id,$month,static function($db) use ($id,$month,$line) {
-            $db->table('LigneFraisHorsForfait')->where(['id'=>$line,'idVisiteur'=>$id,'mois'=>$month])->delete();
-            if ($db->affectedRows() !== 1) throw new InvalidArgumentException('Ligne introuvable pour cette fiche.');
-        });
+        $this->checkEditable($id, $month);
+        $this->db->table('LigneFraisHorsForfait')->where(['id'=>$line,'idVisiteur'=>$id,'mois'=>$month])->delete();
+        if ($this->db->affectedRows() !== 1) throw new InvalidArgumentException('Ligne introuvable pour cette fiche.');
+        $this->touch($id, $month);
     }
     public function allFiches(): array
     {
