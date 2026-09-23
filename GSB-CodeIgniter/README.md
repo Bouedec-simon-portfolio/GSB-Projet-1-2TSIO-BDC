@@ -1,0 +1,34 @@
+# GSB sous CodeIgniter 4
+
+Application pédagogique de gestion des frais, issue du projet GSB de Simon Bouëdec, seul membre du groupe 7.
+Version préparée pour Debian LAMP. Lire **docs/INSTALLATION.md** en premier.
+
+## Contenu
+- Page de connexion commune aux visiteurs et à l'administrateur ; redirection vers l'espace correspondant.
+- Connexion avec mots de passe hachés, sessions et déconnexion POST.
+- Fiches mensuelles personnelles et consultation des mois passés.
+- Saisie des quantités forfaitaires, ajout et suppression des frais hors forfait.
+- Contrôle du mois courant et de l'état CR côté serveur.
+- Consultation administrative simple en lecture seule (ID a00 par défaut).
+- Protection CSRF, échappement HTML et requêtes paramétrées.
+
+Le total déclaré est calculé séparément du montant validé par le comptable.
+La validation comptable, le dépôt de justificatifs et l'import automatique des anciennes données ne font pas partie de cette version.
+Les anciennes pages vitrines restent dans Site-GSB ; elles ne sont pas exposées par cette application de frais.
+
+## Prérequis
+PHP >= 8.2, extensions intl, mbstring et mysqli, Composer, MariaDB/MySQL, Apache avec rewrite.
+Squelette officiel appstarter 4.7.4 ; framework fixé à 4.7.4 dans composer.json.
+Le framework et ses dépendances sont téléchargés par Composer lors de l'installation.
+Il n'y a pas de vendor ni de composer.lock fourni tant que Composer n'a pas été exécuté.
+Après la première installation réussie, conserver composer.lock dans Git pour figer aussi les dépendances transitives.
+
+## Vérification
+`bash deploy/preflight-debian.sh` vérifie la préparation de la VM sans la modifier.
+`php tests/rules.php` vérifie les règles métier.
+Le workflow exécute `python3 tests/http_smoke.py` sous Apache dans un conteneur Debian, puis `php tests/assert_database.php` contrôle les mises à jour dans la base de test dédiée. Ces scripts ne doivent pas être lancés sur la base de travail.
+Consulter docs/RECETTE.md pour les scénarios et le statut réel des vérifications.
+
+## Source et suivi
+Le dossier Site-GSB original est conservé. Le nouveau code se trouve dans GSB-CodeIgniter.
+Le dossier d'examen est une préparation à compléter après les tests dans la VM : captures d'écran, résultats et dates. Le dossier initial reste distinct des preuves à produire en fin de projet.

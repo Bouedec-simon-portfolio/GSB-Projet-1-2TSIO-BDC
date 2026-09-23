@@ -1,0 +1,76 @@
+name: GSB CodeIgniter checks
+on:
+  push:
+    branches: [migration-codeigniter-lamp]
+  pull_request:
+    paths: ['GSB-CodeIgniter/**', '.github/workflows/gsb-ci.yml']
+permissions:
+  contents: read
+jobs:
+  php-and-http:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ephemeral-ci-only
+          MARIADB_DATABASE: gsb_test
+          MARIADB_USER: gsb_test
+          MARIADB_PASSWORD: ephemeral-ci-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    defaults:
+      run:
+        working-directory: GSB-CodeIgniter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, mbstring, mysqli
+          tools: composer
+      - run: composer install --no-dev --prefer-dist --no-interaction
+      - run: find app tests -name '*.php' -print0 | xargs -0 -n1 php -l
+      - run: php tests/rules.php
+      - name: Prepare isolated fixtures
+        run: |
+          cat > .env <<'ENV'
+          CI_ENVIRONMENT = production
+          app.baseURL = 'http://127.0.0.1:8080/'
+          app.indexPage = ''
+          database.default.hostname = 127.0.0.1
+          database.default.database = gsb_test
+          database.default.username = gsb_test
+          database.default.password = ephemeral-ci-only
+          database.default.DBDriver = MySQLi
+          database.default.port = 3306
+          ENV
+          php tests/fixtures.php
+      - name: Build Debian Apache test server
+        run: docker build -t gsb-apache-test tests/apache
+      - name: HTTP integration on Debian Apache
+        env:
+          GSB_TEST_PASSWORD: ephemeral-test-Password-123
+          TZ: Europe/Paris
+        run: |
+          docker run -d --name gsb-apache --network host \
+            --mount "type=bind,src=$PWD,dst=/var/www/gsb-ci,readonly" \
+            --tmpfs /var/www/gsb-ci/writable:rw,uid=33,gid=33,mode=0770 \
+            gsb-apache-test
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/connexion >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/connexion >/dev/null
+          python3 tests/http_smoke.py
+          php tests/assert_database.php
+      - name: Apache logs on failure
+        if: failure()
+        run: |
+          docker logs gsb-apache || true
+          docker exec gsb-apache sh -c 'cat /var/www/gsb-ci/writable/logs/log-*.log' || true
+      - name: Stop isolated test server
+        if: always()
+        run: docker rm -f gsb-apache || true
