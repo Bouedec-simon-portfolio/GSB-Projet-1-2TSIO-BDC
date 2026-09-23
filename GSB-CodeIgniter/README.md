@@ -4,11 +4,12 @@ Application pédagogique de gestion des frais, issue du projet GSB de Simon Bou�
 Version préparée pour Debian LAMP. Lire **docs/INSTALLATION.md** en premier.
 
 ## Contenu
-- Connexion avec mots de passe hachés, sessions, limitation des tentatives et déconnexion POST.
+- Page de connexion commune aux visiteurs et à l'administrateur ; redirection vers l'espace correspondant.
+- Connexion avec mots de passe hachés, sessions et déconnexion POST.
 - Fiches mensuelles personnelles et consultation des mois passés.
 - Saisie des quantités forfaitaires, ajout et suppression des frais hors forfait.
-- Contrôle du mois courant et de l'état CR côté serveur, transactions en base.
-- Consultation administrative en lecture seule (ID a00 par défaut).
+- Contrôle du mois courant et de l'état CR côté serveur.
+- Consultation administrative simple en lecture seule (ID a00 par défaut).
 - Protection CSRF, échappement HTML et requêtes paramétrées.
 
 Le total déclaré est calculé séparément du montant validé par le comptable.
