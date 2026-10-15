@@ -17,7 +17,7 @@ renderHeader('Gestion des fiches - Admin - GSB', 'admin');
 <?php if (empty($fiches)): ?>
   <div class="message">Aucune fiche de frais n'a été créée.</div>
 <?php else: ?>
-  <div class="table-wrap">
+  <div class="table-wrap" role="region" aria-label="Fiches de tous les visiteurs" tabindex="0">
     <table class="table">
       <thead>
         <tr>

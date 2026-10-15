@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 renderHeader('Connexion - GSB', 'login');
 ?>
 
+<section class="panel login-panel">
+<p class="eyebrow">Espace professionnel</p>
 <h2>Connexion</h2>
 <p>Connectez-vous avec vos identifiants pour accéder à votre espace de gestion des fiches de frais.</p>
 
@@ -45,16 +47,17 @@ renderHeader('Connexion - GSB', 'login');
   </div>
 <?php endif; ?>
 
-<form method="post" novalidate style="max-width:380px;">
+<form method="post" novalidate>
   <div class="form-group">
     <label for="login">Identifiant</label>
-    <input id="login" name="login" type="text" required value="<?php echo e($_POST['login'] ?? ''); ?>" />
+    <input id="login" name="login" type="text" autocomplete="username" required value="<?php echo e($_POST['login'] ?? ''); ?>" />
   </div>
   <div class="form-group">
     <label for="password">Mot de passe</label>
-    <input id="password" name="password" type="password" required />
+    <input id="password" name="password" type="password" autocomplete="current-password" required />
   </div>
   <button type="submit" class="btn">Se connecter</button>
 </form>
+</section>
 
 <?php renderFooter();
