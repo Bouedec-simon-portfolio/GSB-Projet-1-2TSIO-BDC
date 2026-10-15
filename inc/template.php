@@ -29,59 +29,36 @@ function renderHeader(string $title, string $activePage = ''): void
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><?php echo e($title); ?></title>
   <link rel="stylesheet" href="gsb.css" />
-  <style>
-    html { height: 100%; }
-    body { display: flex; flex-direction: column; min-height: 100vh; margin: 0; }
-    main { flex: 1; }
-    footer { margin-top: auto; }
-    .nav-main { display:flex; gap:1rem; padding:1rem; background:#003366; color:#fff; }
-    .nav-main a { color:#fff; text-decoration:none; padding:0.5rem 0.75rem; border-radius:4px; }
-    .nav-main a.active, .nav-main a:hover { background:rgba(255,255,255,0.15); }
-    .container { max-width:1100px; margin:0 auto; padding:1rem; }
-    .message { padding:0.75rem 1rem; border-radius:6px; margin-bottom:1rem; }
-    .message.error { background:#ffefef; border:1px solid #f1c0c0; color:#8a1f1f; }
-    .message.success { background:#eef9ef; border:1px solid #b3d7b3; color:#1f5d1f; }
-    .form-group { margin-bottom:1rem; }
-    .form-group label { display:block; margin-bottom:0.25rem; font-weight:600; }
-    .form-group input, .form-group select, .form-group textarea { width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; padding:0.6rem 1rem; border:none; border-radius:6px; cursor:pointer; background:#ff7a00; color:#fff; font-weight:600; }
-    .btn.secondary { background:#444; }
-    .btn.danger { background:#c00; }
-    .table { width:100%; border-collapse:collapse; margin-top:1rem; }
-    .table th, .table td { border:1px solid rgba(0,0,0,0.1); padding:0.65rem; text-align:left; }
-    .table th { background:rgba(0,0,0,0.05); }
-  </style>
 </head>
 <body>
-  <header style="background: linear-gradient(135deg, #003366 0%, #004d99 100%); padding:1rem; color:#fff;">
-    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:1.5rem;">
-      <div style="display:flex; align-items:center; gap:1rem;">
-        <!-- Logo temporaire - remplacer logo.svg ou logo.png par votre fichier -->
-        <img src="logo.svg" alt="Logo GSB" style="height:50px; width:auto;" onerror="this.style.display='none'" />
+  <header class="app-header">
+    <div class="container app-header-inner">
+      <div class="app-brand">
+        <img src="logo.svg" alt="GSB" width="48" height="48" />
         <div>
-          <h1 style="margin:0; font-size:1.4rem;">GSB - Gestion des frais</h1>
-          <div style="font-size:0.9rem; opacity:0.85;">Espace visiteurs médicaux</div>
+          <h1>GSB · Gestion des frais</h1>
+          <p>Espace visiteurs médicaux</p>
         </div>
       </div>
       <?php if ($user): ?>
-        <div style="text-align:right; font-size:0.9rem;">
+        <div class="user-menu">
           <div><strong><?php echo e($user['prenom'] . ' ' . $user['nom']); ?></strong></div>
-          <div><a href="deconnexion.php" style="color:rgba(255,255,255,0.85); text-decoration:underline;">Déconnexion</a></div>
+          <a href="deconnexion.php">Déconnexion</a>
         </div>
       <?php endif; ?>
     </div>
   </header>
 
-  <nav class="nav-main">
-    <a href="tableau-bord.php" class="<?php echo $activePage === 'dashboard' ? 'active' : ''; ?>">Tableau de bord</a>
-    <a href="saisie-frais.php" class="<?php echo $activePage === 'saisie' ? 'active' : ''; ?>">Saisie de frais</a>
-    <a href="consultation-fiches.php" class="<?php echo $activePage === 'consultation' ? 'active' : ''; ?>">Consultation</a>
+  <nav class="container nav-main" aria-label="Navigation de l’espace visiteurs">
+    <a href="tableau-bord.php" class="<?php echo $activePage === 'dashboard' ? 'active' : ''; ?>"<?php echo $activePage === 'dashboard' ? ' aria-current="page"' : ''; ?>>Tableau de bord</a>
+    <a href="saisie-frais.php" class="<?php echo $activePage === 'saisie' ? 'active' : ''; ?>"<?php echo $activePage === 'saisie' ? ' aria-current="page"' : ''; ?>>Saisie de frais</a>
+    <a href="consultation-fiches.php" class="<?php echo $activePage === 'consultation' ? 'active' : ''; ?>"<?php echo $activePage === 'consultation' ? ' aria-current="page"' : ''; ?>>Consultation</a>
     <?php if (isAdmin()): ?>
-      <a href="admin-fiches.php" class="<?php echo $activePage === 'admin' ? 'active' : ''; ?>" style="background:#c00; margin-left:auto;">Admin - Fiches</a>
+      <a href="admin-fiches.php" class="nav-admin <?php echo $activePage === 'admin' ? 'active' : ''; ?>"<?php echo $activePage === 'admin' ? ' aria-current="page"' : ''; ?>>Admin - Fiches</a>
     <?php endif; ?>
-    <a href="connexion.php" class="<?php echo $activePage === 'login' ? 'active' : ''; ?>">Connexion</a>
+    <a href="connexion.php" class="<?php echo $activePage === 'login' ? 'active' : ''; ?>"<?php echo $activePage === 'login' ? ' aria-current="page"' : ''; ?>>Connexion</a>
   </nav>
-  <main class="container" style="flex: 1;">
+  <main class="container app-main">
 <?php }
 
 /**
