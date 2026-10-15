@@ -106,9 +106,6 @@ function login(string $login, string $password): bool
     if (password_verify($password, $stored)) {
         $valid = true;
         $shouldRehash = password_needs_rehash($stored, PASSWORD_DEFAULT);
-    } elseif (hash_equals($stored, $password)) {
-        $valid = true;
-        $shouldRehash = true;
     }
 
     if (!$valid) {

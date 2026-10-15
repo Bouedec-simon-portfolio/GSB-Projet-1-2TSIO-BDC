@@ -13,7 +13,7 @@ Version préparée pour Debian LAMP. Lire **docs/INSTALLATION.md** en premier.
 - Protection CSRF, échappement HTML et requêtes paramétrées.
 
 Le total déclaré est calculé séparément du montant validé par le comptable.
-La validation comptable, le dépôt de justificatifs et l'import automatique des anciennes données ne font pas partie de cette version.
+La validation comptable, le dépôt de justificatifs et l'import des anciennes fiches de frais ne font pas partie de cette version. Les 28 identités d'origine sont conservées avec `php spark gsb:accounts`, exécuté aussi par l'installateur ; leurs nouveaux mots de passe sont définis localement. Voir [docs/COMPTES.md](docs/COMPTES.md).
 Les anciennes pages vitrines restent dans Site-GSB ; elles ne sont pas exposées par cette application de frais.
 
 ## Prérequis

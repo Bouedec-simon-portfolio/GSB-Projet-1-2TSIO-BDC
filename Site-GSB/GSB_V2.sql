@@ -36,7 +36,7 @@ CREATE TABLE Visiteur (
     id CHAR(4),
     nom VARCHAR(30) NOT NULL,
     prenom VARCHAR(30) NOT NULL,
-    login VARCHAR(20) NOT NULL,
+    login VARCHAR(20) NOT NULL UNIQUE,
     mdp VARCHAR(255) NOT NULL,
     adresse VARCHAR(100),
     cp CHAR(5),
@@ -45,41 +45,37 @@ CREATE TABLE Visiteur (
     PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
--- INSERT INTO Visiteur VALUES
--- ('a00','Admin','Système','admin','admin1234','123 rue Admin','75000','Paris','2026-01-01'),
--- ('a131','Villechalane','Louis','lvillachane','jux7g','8 rue des Charmes','46000','Cahors','2005-12-21'),
--- ('a17','Andre','David','dandre','oppg5','1 rue Petit','46200','Lalbenque','1998-11-23'),
--- ('a55','Bedos','Christian','cbedos','gmhxd','1 rue Peranud','46250','Montcuq','1995-01-12'),
--- ('a93','Tusseau','Louis','ltusseau','ktp3s','22 rue des Ternes','46123','Gramat','2000-05-01'),
--- ('b13','Bentot','Pascal','pbentot','doyw1','11 allée des Cerises','46512','Bessines','1992-07-09'),
--- ('b16','Bioret','Luc','lbioret','hrjfs','1 Avenue gambetta','46000','Cahors','1998-05-11'),
--- ('b19','Bunisset','Francis','fbunisset','4vbnd','10 rue des Perles','93100','Montreuil','1987-10-21'),
--- ('b25','Bunisset','Denise','dbunisset','s1y1r','23 rue Manin','75019','Paris','2010-12-05'),
--- ('b28','Cacheux','Bernard','bcacheux','uf7r3','114 rue Blanche','75017','Paris','2009-11-12'),
--- ('b34','Cadic','Eric','ecadic','6u8dc','123 avenue de la République','75011','Paris','2008-09-23'),
--- ('b4','Charoze','Catherine','ccharoze','u817o','100 rue Petit','75019','Paris','2005-11-12'),
--- ('b50','Clepkens','Christophe','cclepkens','bw1us','12 allée des Anges','93230','Romainville','2003-08-11'),
--- ('b59','Cottin','Vincenne','vcottin','2hoh9','36 rue Des Roches','93100','Monteuil','2001-11-18'),
--- ('c14','Daburon','François','fdaburon','7oqpv','13 rue de Chanzy','94000','Créteil','2002-02-11'),
--- ('c3','De','Philippe','pde','gk9kx','13 rue Barthes','94000','Créteil','2010-12-14'),
--- ('c54','Debelle','Michel','mdebelle','od5rt','181 avenue Barbusse','93210','Rosny','2006-11-23'),
--- ('d13','Debelle','Jeanne','jdebelle','nvwqq','134 allée des Joncs','44000','Nantes','2000-05-11'),
--- ('d51','Debroise','Michel','mdebroise','sghkb','2 Bld Jourdain','44000','Nantes','2001-04-17'),
--- ('e22','Desmarquest','Nathalie','ndesmarquest','f1fob','14 Place d Arc','45000','Orléans','2005-11-12'),
--- ('e24','Desnost','Pierre','pdesnost','4k2o5','16 avenue des Cèdres','23200','Guéret','2001-02-05'),
--- ('e39','Dudouit','Frédéric','fdudouit','44im8','18 rue de l église','23120','GrandBourg','2000-08-01'),
--- ('e49','Duncombe','Claude','cduncombe','qf77j','19 rue de la tour','23100','La souterraine','1987-10-10'),
--- ('e5','Enault-Pascreau','Céline','cenault','y2qdu','25 place de la gare','23200','Gueret','1995-09-01'),
--- ('e52','Eynde','Valérie','veynde','i7sn3','3 Grand Place','13015','Marseille','1999-11-01'),
--- ('f21','Finck','Jacques','jfinck','mpb3t','10 avenue du Prado','13002','Marseille','2001-11-10'),
--- ('f39','Frémont','Fernande','ffremont','xs5tq','4 route de la mer','13012','Allauh','1998-10-01'),
--- ('f4','Gest','Alain','agest','dywvt','30 avenue de la mer','13025','Berre','1985-11-01');
---
--- NOTE: les mots de passe ci-dessus étaient en clair dans le fichier d'origine.
--- Pour des raisons de sécurité, importez la base sans ces utilisateurs,
--- ou remplacez ces valeurs par des hash bcrypt générés par PHP.
-
-
+-- 28 comptes conservés. Hash PHP de secrets aléatoires non conservés.
+-- Définir localement un nouveau mot de passe avec php account.php reset ID.
+INSERT INTO Visiteur VALUES
+('a00','Admin','Système','admin','$2y$10$LiReQyR8EPrVpZsCR/5Sb.bCQYbUL82fxyt8yUAdbjl5NeBNY16d2','123 rue Admin','75000','Paris','2026-01-01'),
+('a131','Villechalane','Louis','lvillachane','$2y$10$wsg64m4Yti0W6NXsrClHUu.xxXhq4RoX5exKeToaf.pXd1dDjie02','8 rue des Charmes','46000','Cahors','2005-12-21'),
+('a17','Andre','David','dandre','$2y$10$zXxKxPVm48pVUwxuOfrIseoLCkETgKeIsxm8Tlzb4vc78ROX0QHwa','1 rue Petit','46200','Lalbenque','1998-11-23'),
+('a55','Bedos','Christian','cbedos','$2y$10$WlmTRAclsYjjLWxto4MdreqGRgT0js4nUYjcAThp0INqmTYtJuFyO','1 rue Peranud','46250','Montcuq','1995-01-12'),
+('a93','Tusseau','Louis','ltusseau','$2y$10$PcXUwJ5/oFQ8Rs.YZ5ItieHYsfmI4jvqrXyaKsS4mZzOld/gDqu7i','22 rue des Ternes','46123','Gramat','2000-05-01'),
+('b13','Bentot','Pascal','pbentot','$2y$10$0qiKsfVaZsCscDH/Tj7Sh.AdOo7z/fjTMk67AYSj7FRjZbCTaz/fu','11 allée des Cerises','46512','Bessines','1992-07-09'),
+('b16','Bioret','Luc','lbioret','$2y$10$FgnqdwQVyT8AXYWw30vpGO9VtvQ4R.vWE83wK3Wd3oxGmn77ffs4K','1 Avenue gambetta','46000','Cahors','1998-05-11'),
+('b19','Bunisset','Francis','fbunisset','$2y$10$WO6HZCIJmgwm1l95l4rAM.Pr0J4w.7CWXYCnJe19EPH.CGUpWq0qm','10 rue des Perles','93100','Montreuil','1987-10-21'),
+('b25','Bunisset','Denise','dbunisset','$2y$10$KrP462s4RZzjDz.7gKKK0O35b32sjt35eK/3vwQ5IMzl5ELKzbA4K','23 rue Manin','75019','Paris','2010-12-05'),
+('b28','Cacheux','Bernard','bcacheux','$2y$10$1dUzMQZODwNcpSKyqLwQq.nGeewrhR6PJ7FLE0UbzsFvxBL5ri5IW','114 rue Blanche','75017','Paris','2009-11-12'),
+('b34','Cadic','Eric','ecadic','$2y$10$XQbEMkg7k4VELjcmKewTx.x1iChskHd6N0qzj8XPGpDSE0V4ab5DW','123 avenue de la République','75011','Paris','2008-09-23'),
+('b4','Charoze','Catherine','ccharoze','$2y$10$5zqFh29KZkjhqf5tSdVoKuApBCzXUyj2kQNKz3gMlZJG4lm5CSRhO','100 rue Petit','75019','Paris','2005-11-12'),
+('b50','Clepkens','Christophe','cclepkens','$2y$10$.diZy2OmmfJyVcFHLp9WGe/Nd9MK.vt6MbRQOu6pzI6jpd79i1Edu','12 allée des Anges','93230','Romainville','2003-08-11'),
+('b59','Cottin','Vincenne','vcottin','$2y$10$92gyaaW/aDriFbXRcKAcUe6XM3ei8zq1Eemtx.Btxz14TsNuwAntS','36 rue Des Roches','93100','Monteuil','2001-11-18'),
+('c14','Daburon','François','fdaburon','$2y$10$K6vnNgvPOJc4BEDIU4uuRO4HUsTHLp.Z/IdPLUuvW8nXXjnAzfhVS','13 rue de Chanzy','94000','Créteil','2002-02-11'),
+('c3','De','Philippe','pde','$2y$10$5gh07w7fExcjpMsDnGmmmOLAlOLd/omdr.xqLX0LuzedL9SV9cm.O','13 rue Barthes','94000','Créteil','2010-12-14'),
+('c54','Debelle','Michel','mdebelle','$2y$10$J.2DxeEsX.Es3n3om0UB5uhyJpLKmAuw2LSefWSrh6u3S1Yv7gtFe','181 avenue Barbusse','93210','Rosny','2006-11-23'),
+('d13','Debelle','Jeanne','jdebelle','$2y$10$Vff5QGo.w3pwUpP9MWRo/.QaOz5F3Ojopnlt9R9Jaxrfa/jDiMBZm','134 allée des Joncs','44000','Nantes','2000-05-11'),
+('d51','Debroise','Michel','mdebroise','$2y$10$bBPdiONzeSs1tAAVcCA1l.ahrdUU3DK1FgAFeZXaFxAKhBYBnxsV2','2 Bld Jourdain','44000','Nantes','2001-04-17'),
+('e22','Desmarquest','Nathalie','ndesmarquest','$2y$10$HGR3AKAEzGEh5P8zfCoGyuq54gT73ZCgKDNP6Osne31L.BzpMhj8m','14 Place d Arc','45000','Orléans','2005-11-12'),
+('e24','Desnost','Pierre','pdesnost','$2y$10$FDqm2d7pU/zn/pw1dNMIqO6UvKACtwz0fOTNH/NT43Gm8mJBEbX5S','16 avenue des Cèdres','23200','Guéret','2001-02-05'),
+('e39','Dudouit','Frédéric','fdudouit','$2y$10$FFLEMqlTc2JwcBCrdMD.DuDWnUbCD7D0di2lgbs1wPDMH/6MouNuu','18 rue de l église','23120','GrandBourg','2000-08-01'),
+('e49','Duncombe','Claude','cduncombe','$2y$10$JpzNZfUoonRwYMI7u32x9.Kqy2otwQet2CCrKGu6vI5nzF9xA0i5e','19 rue de la tour','23100','La souterraine','1987-10-10'),
+('e5','Enault-Pascreau','Céline','cenault','$2y$10$Q9ZEgAeyt1ZnQTcf0vLy1eA407HEAdcPnzqN/NohIbPBqFqML7xua','25 place de la gare','23200','Gueret','1995-09-01'),
+('e52','Eynde','Valérie','veynde','$2y$10$fAKzj.7zzIDOIDD615s2qO3DEY60oMcsZSgArCORBAXsFZI68LS2e','3 Grand Place','13015','Marseille','1999-11-01'),
+('f21','Finck','Jacques','jfinck','$2y$10$42EKlijB6NUfUVSZ9eiq7u92xweshQ0kV0zbGfvyycc/m5e0a1HFG','10 avenue du Prado','13002','Marseille','2001-11-10'),
+('f39','Frémont','Fernande','ffremont','$2y$10$HgbhM9PVZBsn3.QWOWwu2ORQ3h3M.Y6oxvVnhXyV/peaUCPDHvWvW','4 route de la mer','13012','Allauh','1998-10-01'),
+('f4','Gest','Alain','agest','$2y$10$M/z0liV9.c5l48g4USeFV.6azt9C0ZTnokNc9sAHE7KP4oOQAA.ee','30 avenue de la mer','13025','Berre','1985-11-01');
 
 CREATE TABLE FicheFrais (
     idVisiteur CHAR(4),
@@ -121,31 +117,5 @@ CREATE TABLE LigneFraisHorsForfait (
 )ENGINE=InnoDB;
 
 
-DROP USER IF EXISTS 'superAdmin'@'localhost';
-DROP USER IF EXISTS 'admin'@'localhost';
-DROP USER IF EXISTS 'lecteur'@'localhost';
-DROP USER IF EXISTS 'responsable'@'localhost';
-DROP USER IF EXISTS 'delegue'@'localhost';
-DROP USER IF EXISTS 'visiteur'@'localhost';
-
-CREATE USER 'superAdmin'@'localhost' IDENTIFIED BY 'SuperAdmin123!';
-GRANT ALL PRIVILEGES ON gsbV2.* TO 'superAdmin'@'localhost';
-
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Admin123!';
-GRANT SELECT, INSERT, UPDATE ON gsbV2.* TO 'admin'@'localhost';
-
-CREATE USER 'lecteur'@'localhost' IDENTIFIED BY 'Lecteur123!';
-GRANT SELECT ON gsbV2.* TO 'lecteur'@'localhost';
-
-CREATE USER 'responsable'@'localhost' IDENTIFIED BY '1234';
-GRANT ALL PRIVILEGES ON gsbV2.* TO 'responsable'@'localhost';
-
-CREATE USER 'delegue'@'localhost' IDENTIFIED BY '1234';
-GRANT SELECT, INSERT, UPDATE ON gsbV2.* TO 'delegue'@'localhost';
-
-CREATE USER 'visiteur'@'localhost' IDENTIFIED BY '1234';
-GRANT SELECT, INSERT, UPDATE ON gsbV2.FicheFrais TO 'visiteur'@'localhost';
-GRANT SELECT, INSERT, UPDATE ON gsbV2.LigneFraisForfait TO 'visiteur'@'localhost';
-GRANT SELECT ON gsbV2.FraisForfait TO 'visiteur'@'localhost';
-
-FLUSH PRIVILEGES;
+-- Configurer séparément l'utilisateur MySQL et ses droits sur la VM.
+-- Aucun mot de passe de connexion MySQL n'est fourni dans ce dépôt.

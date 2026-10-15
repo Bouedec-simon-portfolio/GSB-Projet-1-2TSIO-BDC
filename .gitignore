@@ -1,0 +1,6 @@
+Site-GSB/inc/config.local.php
+.env
+*.local.sql
+*.local.json
+*.local.txt
+**/tests/.runtime/

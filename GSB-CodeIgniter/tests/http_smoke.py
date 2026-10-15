@@ -51,6 +51,8 @@ assert 'FERMEE' not in a.req('fiches/200001')[1]
 ad=Client();_,admin_home,admin_url=ad.login('admin')
 assert admin_url.endswith('/administration') and '>Mes fiches<' not in admin_home
 assert ad.req('administration')[0]==200
+assert ad.req('fiches')[2].endswith('/administration')
+assert ad.post('fiches','fiches',{})[2].endswith('/administration')
 assert a.post(page,'deconnexion',{})[2].endswith('/connexion')
 assert a.req(page)[2].endswith('/connexion')
 for private_path in ['.env','app/','database/schema.sql','composer.json']:

@@ -21,15 +21,11 @@ class ResetPassword extends BaseCommand
             CLI::error('Compte introuvable. Créez-le avec php spark gsb:user si nécessaire.');
             return EXIT_ERROR;
         }
-        CLI::write('La saisie sera visible. Ne partagez pas de capture de ce terminal.');
-        $password = CLI::prompt('Nouveau mot de passe (12 caractères minimum)');
-        $confirmation = CLI::prompt('Confirmez le nouveau mot de passe');
-        if (strlen($password) < 12 || $password !== $confirmation) {
-            CLI::error('Mot de passe trop court ou confirmation différente. Aucun changement.');
-            return EXIT_ERROR;
-        }
+        require_once APPPATH . 'Libraries/password-console.php';
+        try { $hash = \App\Libraries\newLocalPasswordHash(); }
+        catch (\RuntimeException $e) { CLI::error($e->getMessage()); return EXIT_ERROR; }
         // On ne change ni l’identifiant, ni les droits, ni les fiches de frais.
-        if (!$model->update($user['id'], ['mdp' => password_hash($password, PASSWORD_DEFAULT)])) {
+        if (!$model->update($user['id'], ['mdp' => $hash])) {
             CLI::error('Échec de l’enregistrement. Consultez les journaux du serveur.');
             return EXIT_ERROR;
         }

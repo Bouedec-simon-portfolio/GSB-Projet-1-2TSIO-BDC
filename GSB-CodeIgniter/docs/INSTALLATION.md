@@ -44,13 +44,17 @@ Le script demande le mot de passe sudo, installe les paquets, vérifie PHP, inst
 Il refuse une installation existante, une base ou un utilisateur gsb_ci existant et un port 8080 déjà occupé. Si une étape échoue, conserver le message et diagnostiquer la cause ; ne pas supprimer automatiquement une base pour relancer.
 Le mot de passe SQL aléatoire est dans /var/www/gsb-ci/.env, lisible par root et www-data seulement. Ne jamais envoyer ce fichier dans GitHub ni dans une capture.
 
-## 4 Créer les comptes
+## 4 Activer les comptes conservés
 ```bash
 cd /var/www/gsb-ci
-sudo -u www-data php spark gsb:user
+sudo -u www-data php spark gsb:accounts
+sudo -u www-data php spark gsb:password
 ```
-Créer un premier visiteur avec un ID comme v001 et un identifiant simon. Choisir un mot de passe personnel d'au moins 12 caractères. La saisie est visible dans le terminal : ne pas filmer cette étape.
-Relancer pour v002 afin de tester la séparation entre utilisateurs, puis pour a00 si vous voulez tester l'administration. Aucun mot de passe de démonstration public n'est imposé.
+L'installateur ajoute les 28 identités d'origine sans importer les anciens mots de passe. `gsb:accounts` peut être relancé : il ne remplace ni les renseignements ni les hash déjà reconnus. Il invalide tout mot de passe encore stocké en clair, y compris pour les comptes supplémentaires. En cas de conflit d'ID/login, il annule son import.
+
+Avec `gsb:password`, saisir le login d'origine `admin` pour le compte administrateur `a00`, puis un nouveau mot de passe privé et sa confirmation. Relancer pour le visiteur `a131` (login `lvillachane`) et éventuellement un second visiteur d'origine pour tester l'isolation. Choisir des phrases de passe différentes de 12 à 72 octets ; la saisie est masquée dans le terminal Debian. Les anciens mots de passe courts sont à abandonner, même déjà hachés.
+
+Pour un nouveau compte, utiliser `sudo -u www-data php spark gsb:user` : renseigner ID, login, nom, prénom et nouveau mot de passe. Aucun secret de démonstration n'est fourni dans le dépôt. Voir [COMPTES.md](COMPTES.md) pour le compte rendu et les tests.
 
 ## 5 Ouvrir depuis Windows
 Ouvrir l'URL choisie, puis se connecter. Dans PowerShell, si nécessaire :
@@ -87,7 +91,7 @@ sudo systemctl reload apache2
 ```
 
 ## Anciennes données et serveur de l'établissement
-La base fournie est neuve. Pour récupérer vos anciennes données, exporter d'abord gsbV2 et vérifier les doublons de login, les mots de passe hachés et les contraintes. Ne pas exécuter l'ancien script GSB_V2.sql : il commence par DROP DATABASE.
+La base fournie est neuve et l'installateur y conserve les identités d'origine avec `gsb:accounts`. Pour récupérer aussi les anciennes fiches de frais, exporter d'abord gsbV2 localement et vérifier les doublons de login, les mots de passe hachés et les contraintes. Sur une installation CodeIgniter existante, lancer `gsb:accounts`, puis `gsb:password` pour les comptes d'examen ; ne pas réimporter schema.sql. Ne pas exécuter l'ancien script GSB_V2.sql sur une base utilisée : il commence par DROP DATABASE.
 Pour H02, adapter avec l'enseignant le chemin, les droits, la base et l'URL : le script installe une VM dédiée, pas un serveur partagé d'établissement. L'application proposée en HTTP est destinée à une VM locale ; une exposition publique demande HTTPS et une configuration d'exploitation adaptée.
 
 ## Ce que vérifie l’intégration automatisée

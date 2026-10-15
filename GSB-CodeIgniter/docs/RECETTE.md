@@ -2,6 +2,8 @@
 
 Base de test dédiée uniquement. Pour chaque essai, noter date, opérateur, résultat et preuve.
 
+Comptes d'origine et nouveaux mots de passe : voir [COMPTES.md](COMPTES.md). Le 15 octobre 2026, les tests dédiés aux comptes ont réussi sous PHP/MySQL Windows (serveur HTTP PHP), pour les versions CodeIgniter et Site-GSB. Cela ne valide pas encore les lignes VM ci-dessous.
+
 Vérifications déjà observées sur GitHub Actions : installation Composer, syntaxe PHP et 21 tests métier réussis. La recette HTTP automatisée avec MariaDB a réussi le 18 septembre 2026 (GitHub Actions, exécution 35355916018). La VM Debian et Apache ne sont pas encore testés.
 
 | ID | Action | Résultat attendu | Résultat VM |

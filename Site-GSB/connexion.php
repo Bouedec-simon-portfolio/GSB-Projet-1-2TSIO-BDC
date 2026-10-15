@@ -11,7 +11,7 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = trim($_POST['login'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    $password = $_POST['password'] ?? '';
 
     if ($login === '') {
         $errors[] = 'Veuillez renseigner votre identifiant.';

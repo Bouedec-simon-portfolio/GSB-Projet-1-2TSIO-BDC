@@ -51,6 +51,8 @@ sudo chmod 640 "$GSB_TARGET/.env"
 sudo chown -R www-data:www-data "$GSB_TARGET/writable"
 sudo find "$GSB_TARGET/writable" -type d -exec chmod 770 {} +
 sudo find "$GSB_TARGET/writable" -type f -exec chmod 660 {} +
+cd "$GSB_TARGET"
+sudo -u www-data php spark gsb:accounts
 sudo tee /etc/apache2/sites-available/gsb-ci.conf >/dev/null <<'APACHE'
 Listen 8080
 <VirtualHost *:8080>
@@ -71,4 +73,4 @@ sudo a2ensite gsb-ci
 sudo apache2ctl configtest
 sudo systemctl reload apache2
 printf '\nInstallation terminée. Adresse : %s\n' "$GSB_URL"
-printf 'Créer maintenant vos comptes :\ncd /var/www/gsb-ci\nsudo -u www-data php spark gsb:user\n'
+printf 'Activer a00 et un visiteur (login conservé, nouveau mot de passe privé) :\ncd /var/www/gsb-ci\nsudo -u www-data php spark gsb:password\n'

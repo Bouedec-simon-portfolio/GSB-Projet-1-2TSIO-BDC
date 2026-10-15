@@ -24,9 +24,10 @@ $envOrLocal = static function (string $envName, string $localKey, $default) use 
 };
 
 define('DB_HOST', (string) $envOrLocal('GSB_DB_HOST', 'db_host', '127.0.0.1'));
+define('DB_PORT', (int) $envOrLocal('GSB_DB_PORT', 'db_port', 3306));
 define('DB_NAME', (string) $envOrLocal('GSB_DB_NAME', 'db_name', 'gsbV2'));
 define('DB_USER', (string) $envOrLocal('GSB_DB_USER', 'db_user', 'slam'));
-define('DB_PASS', (string) $envOrLocal('GSB_DB_PASS', 'db_pass', 'password'));
+define('DB_PASS', (string) $envOrLocal('GSB_DB_PASS', 'db_pass', ''));
 define('DB_CHARSET', 'utf8mb4');
 
 define('SESSION_NAME', 'gsb_session');
@@ -36,11 +37,6 @@ if (is_string($adminIds)) {
     $adminIds = array_values(array_filter(array_map('trim', explode(',', $adminIds))));
 }
 define('ADMIN_IDS', is_array($adminIds) ? $adminIds : ['a00']);
-
-define(
-    'ADMIN_CREATION_TOKEN',
-    (string) $envOrLocal('GSB_ADMIN_CREATION_TOKEN', 'admin_creation_token', '')
-);
 
 $appEnvironment = (string) $envOrLocal('GSB_APP_ENV', 'app_env', 'development');
 define('DISPLAY_ERRORS', $appEnvironment !== 'production');

@@ -20,6 +20,7 @@ expect((int)value($db, "SELECT COUNT(*) FROM LigneFraisForfait WHERE idVisiteur=
 expect((int)value($db, "SELECT COUNT(*) FROM LigneFraisHorsForfait WHERE libelle IN ('TEST TAXI','REFUSER','SANS TOKEN','FERMEE')") === 0, 'Taxi supprimé et lignes invalides absentes');
 expect((int)value($db, "SELECT COUNT(*) FROM LigneFraisHorsForfait WHERE idVisiteur='v002'") === 0, 'Aucune ligne ajoutée pour Bob');
 expect((int)value($db, "SELECT COUNT(*) FROM LigneFraisHorsForfait WHERE idVisiteur='v001' AND mois=? AND libelle=? AND montant=1", [$month, '<script>alert(1)</script>']) === 1, 'La chaîne HTML est stockée comme donnée et affichée échappée');
+expect((int)value($db, "SELECT COUNT(*) FROM FicheFrais WHERE idVisiteur='a00'") === 0, "L'administrateur ne crée pas de fiche visiteur");
 expect((float)value($db, "SELECT montantValide FROM FicheFrais WHERE idVisiteur='v001' AND mois=?", [$month]) === 0.0, 'La saisie ne valide pas le montant comptable');
 expect(value($db, "SELECT idEtat FROM FicheFrais WHERE idVisiteur='v001' AND mois='200001'") === 'CL', 'La fiche ancienne reste clôturée');
 echo "Contrôles SQL réussis : création, modification, suppression, droits et absence de lignes invalides.\n";

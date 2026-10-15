@@ -1,38 +1,24 @@
 <?php
-require_once __DIR__ . '/inc/db.php';
-
+// Les anciens secrets courts/publics sont invalidés, pas simplement hachés.
 if (PHP_SAPI !== 'cli') {
-    echo 'Ce script doit être exécuté en ligne de commande.' . PHP_EOL;
+    http_response_code(403);
+    exit;
+}
+require_once __DIR__ . '/inc/db.php';
+$pdo = getPDO();
+$pdo->beginTransaction();
+try {
+    $updated = 0;
+    foreach ($pdo->query('SELECT id, mdp FROM Visiteur')->fetchAll() as $user) {
+        if (password_get_info($user['mdp'])['algoName'] !== 'unknown') continue;
+        $hash = password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
+        $pdo->prepare('UPDATE Visiteur SET mdp = ? WHERE id = ?')->execute([$hash, $user['id']]);
+        $updated++;
+    }
+    $pdo->commit();
+    echo "$updated anciens secrets invalidés. Définir les nouveaux mots de passe avec php account.php reset ID.\n";
+} catch (Throwable $e) {
+    $pdo->rollBack();
+    fwrite(STDERR, "Migration annulée. Vérifier localement la configuration de la base.\n");
     exit(1);
 }
-
-$pdo = getPDO();
-$stmt = $pdo->query('SELECT id, mdp FROM Visiteur');
-$users = $stmt->fetchAll();
-
-$updated = 0;
-$skipped = 0;
-
-foreach ($users as $user) {
-    $info = password_get_info($user['mdp']);
-    if ($info['algo'] !== 0) {
-        $skipped++;
-        continue;
-    }
-
-    $newHash = password_hash($user['mdp'], PASSWORD_DEFAULT);
-    if ($newHash === false) {
-        echo "Échec du hash pour l'utilisateur {$user['id']}" . PHP_EOL;
-        continue;
-    }
-
-    $update = $pdo->prepare('UPDATE Visiteur SET mdp = :mdp WHERE id = :id');
-    $update->execute(['mdp' => $newHash, 'id' => $user['id']]);
-    $updated++;
-}
-
-echo sprintf("Total utilisateurs traités : %d\n", count($users));
-echo sprintf("Mots de passe hashés : %d\n", $updated);
-echo sprintf("Mots de passe déjà sécurisés : %d\n", $skipped);
-
-echo 'Terminé.' . PHP_EOL;
