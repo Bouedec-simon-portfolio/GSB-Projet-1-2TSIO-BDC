@@ -23,10 +23,11 @@ renderHeader('Consultation des fiches - GSB', 'consultation');
 <?php if (empty($fiches)): ?>
   <div class="message">Aucune fiche n'est disponible. Créez d'abord une fiche dans le tableau de bord.</div>
 <?php else: ?>
-  <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
-    <div style="flex:1 1 380px;">
+  <div class="consultation-grid">
+    <div class="panel">
       <h3>Mes fiches</h3>
-      <table class="table">
+      <div class="table-wrap" role="region" aria-label="Fiches de frais" tabindex="0">
+        <table class="table">
         <thead>
           <tr>
             <th>Mois</th>
@@ -46,13 +47,14 @@ renderHeader('Consultation des fiches - GSB', 'consultation');
           <?php endforeach; ?>
         </tbody>
       </table>
+      </div>
     </div>
 
     <?php if ($selectedMonth):
       $fiche = getFiche($visiteurId, $selectedMonth);
       $lignes = $fiche ? getLignesHorsForfait($visiteurId, $selectedMonth) : [];
     ?>
-      <div style="flex:2 1 520px;">
+      <div class="panel">
         <h3>Détails de la fiche <?php echo e($selectedMonth); ?></h3>
         <?php if (!$fiche): ?>
           <div class="message error">La fiche sélectionnée n'existe pas.</div>
@@ -61,7 +63,8 @@ renderHeader('Consultation des fiches - GSB', 'consultation');
           <?php if (empty($lignes)): ?>
             <div class="message">Aucune ligne hors forfait n'a encore été saisie pour ce mois.</div>
           <?php else: ?>
-            <table class="table">
+            <div class="table-wrap" role="region" aria-label="Détails des frais" tabindex="0">
+              <table class="table">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -78,7 +81,8 @@ renderHeader('Consultation des fiches - GSB', 'consultation');
                   </tr>
                 <?php endforeach; ?>
               </tbody>
-            </table>
+              </table>
+            </div>
           <?php endif; ?>
         <?php endif; ?>
       </div>

@@ -28,8 +28,13 @@ $fiches = getFichesByVisiteur($visiteurId);
 renderHeader('Tableau de bord - GSB', 'dashboard');
 ?>
 
-<div style="display:flex; flex-wrap:wrap; gap:1.5rem;">
-  <div style="flex:1 1 420px;">
+<div class="page-heading">
+  <p class="eyebrow">Mon espace</p>
+  <h2>Tableau de bord</h2>
+  <p>Retrouvez vos fiches et préparez vos déclarations de frais.</p>
+</div>
+<div class="dashboard-grid">
+  <div class="panel">
     <h2>Créer une nouvelle fiche</h2>
     <p>Vous pouvez créer une nouvelle fiche de frais pour un mois donné.</p>
     <?php if (!empty($errors)): ?>
@@ -55,11 +60,12 @@ renderHeader('Tableau de bord - GSB', 'dashboard');
     </form>
   </div>
 
-  <div style="flex:2 1 520px;">
+  <div class="panel">
     <h2>Vos fiches de frais</h2>
     <?php if (empty($fiches)): ?>
       <p>Aucune fiche de frais n'a encore été créée. Commencez par créer une fiche.</p>
     <?php else: ?>
+      <div class="table-wrap" role="region" aria-label="Vos fiches de frais" tabindex="0">
       <table class="table">
         <thead>
           <tr>
@@ -82,6 +88,7 @@ renderHeader('Tableau de bord - GSB', 'dashboard');
           <?php endforeach; ?>
         </tbody>
       </table>
+      </div>
     <?php endif; ?>
   </div>
 </div>

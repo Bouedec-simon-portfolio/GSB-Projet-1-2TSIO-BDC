@@ -135,7 +135,7 @@ renderHeader('Saisie de frais - GSB', 'saisie');
   <?php if ($moisTermine): ?>
     <div class="message warning">Vous ne pouvez plus ajouter de lignes sur un mois déjà terminé (<?php echo e($moisSelectionne); ?>).</div>
   <?php else: ?>
-    <form method="post" style="max-width:600px;">
+    <form method="post" class="panel" style="max-width:600px;">
       <input type="hidden" name="action" value="add_line" />
       <input type="hidden" name="mois" value="<?php echo e($moisSelectionne); ?>" />
 
@@ -159,6 +159,7 @@ renderHeader('Saisie de frais - GSB', 'saisie');
   <?php if (empty($lignes)): ?>
     <p>Aucune ligne de frais pour ce mois.</p>
   <?php else: ?>
+    <div class="table-wrap" role="region" aria-label="Lignes de frais" tabindex="0">
     <table class="table">
       <thead>
         <tr>
@@ -186,6 +187,7 @@ renderHeader('Saisie de frais - GSB', 'saisie');
       <?php endforeach; ?>
       </tbody>
     </table>
+    </div>
   <?php endif; ?>
 <?php endif; ?>
 
