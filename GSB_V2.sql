@@ -146,7 +146,8 @@ GRANT SELECT, INSERT, UPDATE ON gsbV2.* TO 'delegue'@'localhost';
 
 CREATE USER 'visiteur'@'localhost' IDENTIFIED BY '1234';
 GRANT SELECT, INSERT, UPDATE ON gsbV2.FicheFrais TO 'visiteur'@'localhost';
-GRANT SELECT, INSERT, UPDATE ON gsbV2.LigneFraisForfait TO 'visiteur'@'localhost';
+-- DELETE est nécessaire car REPLACE INTO (frais forfaitisés) fait un DELETE puis un INSERT.
+GRANT SELECT, INSERT, UPDATE, DELETE ON gsbV2.LigneFraisForfait TO 'visiteur'@'localhost';
 GRANT SELECT ON gsbV2.FraisForfait TO 'visiteur'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON gsbV2.LigneFraisHorsForfait TO 'visiteur'@'localhost';
 GRANT SELECT, UPDATE ON gsbV2.Visiteur TO 'visiteur'@'localhost';
