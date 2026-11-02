@@ -38,6 +38,16 @@ Cycle de vie d'une fiche de frais :
 - Une ligne refusée garde son montant mais son libellé commence par « REFUSÉ : » ; elle n'est pas comptée dans le montant validé.
 - Montant validé = somme (quantité × tarif) des frais forfaitisés + frais hors forfait non refusés.
 
+## Déploiement sur le serveur de dev (ISPConfig)
+
+1. Dans ISPConfig (`Sites`), créer un utilisateur de base de données, puis une base de données liée à son site. Le nom de la base reçoit un préfixe (par exemple `c50_gsb`).
+2. Dans `Sites > Sites web`, choisir une version de PHP 8.
+3. Dans phpMyAdmin, sélectionner la base puis importer `GSB_V2_serveur.sql`. Ne pas importer `GSB_V2.sql`, qui crée la base et des utilisateurs MySQL : cela demande des droits que l'on n'a pas sur le serveur.
+4. Déposer les fichiers dans `/web` par FTP, ainsi qu'un `inc/config.local.php` avec le nom de la base, l'utilisateur et le mot de passe créés à l'étape 1, et `'app_env' => 'production'`.
+5. Créer le compte admin : en SSH avec `php create-admin.php`, ou bien en mettant un `admin_creation_token` dans `config.local.php`, en ouvrant `create-admin.php?token=...` puis en remettant le jeton à vide.
+
+Les mots de passe des visiteurs de démo sont hashés automatiquement à leur première connexion (ou avec `php hash-passwords.php` en SSH).
+
 ## Comptes de démonstration
 
 - Administrateur : `admin` / `admin1234` (créé avec `php create-admin.php`)
