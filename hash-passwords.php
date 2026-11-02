@@ -14,8 +14,10 @@ $updated = 0;
 $skipped = 0;
 
 foreach ($users as $user) {
+    // algoName vaut "unknown" si le mot de passe n'est pas encore un hash.
+    // (Attention : en PHP 8, $info['algo'] vaut null et non 0, d'où l'ancien bug.)
     $info = password_get_info($user['mdp']);
-    if ($info['algo'] !== 0) {
+    if ($info['algoName'] !== 'unknown') {
         $skipped++;
         continue;
     }

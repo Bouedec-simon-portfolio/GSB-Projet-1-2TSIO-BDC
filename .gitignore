@@ -1,0 +1,6 @@
+# Configuration locale (identifiants MySQL) : ne jamais publier
+inc/config.local.php
+
+# Fichiers système
+.DS_Store
+Thumbs.db

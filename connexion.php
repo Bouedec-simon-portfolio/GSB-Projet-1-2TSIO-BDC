@@ -11,8 +11,12 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = trim($_POST['login'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    // Pas de trim() sur le mot de passe : un espace peut en faire partie.
+    $password = $_POST['password'] ?? '';
 
+    if (!csrfValide()) {
+        $errors[] = 'Le formulaire a expiré, veuillez réessayer.';
+    }
     if ($login === '') {
         $errors[] = 'Veuillez renseigner votre identifiant.';
     }
@@ -46,6 +50,7 @@ renderHeader('Connexion - GSB', 'login');
 <?php endif; ?>
 
 <form method="post" novalidate style="max-width:380px;">
+  <?php csrfField(); ?>
   <div class="form-group">
     <label for="login">Identifiant</label>
     <input id="login" name="login" type="text" required value="<?php echo e($_POST['login'] ?? ''); ?>" />

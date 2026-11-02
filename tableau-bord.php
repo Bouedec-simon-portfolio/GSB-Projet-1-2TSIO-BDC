@@ -12,14 +12,17 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_month'])) {
     $month = trim($_POST['new_month']);
-    if (!preg_match('/^[0-9]{6}$/', $month)) {
-        $errors[] = 'Le mois doit être au format AAAAMM (ex : 202602).';
+    if (!csrfValide()) {
+        $errors[] = 'Le formulaire a expiré, veuillez réessayer.';
+    } elseif (!moisValide($month)) {
+        $errors[] = 'Le mois doit être au format AAAAMM avec un mois de 01 à 12 (ex : 202602).';
+    } elseif ($month > date('Ym')) {
+        // Comparaison de chaînes possible car le format AAAAMM est toujours sur 6 chiffres.
+        $errors[] = 'Vous ne pouvez pas créer une fiche pour un mois futur.';
+    } elseif (createFicheIfNotExists($visiteurId, $month)) {
+        $success = "La fiche du mois $month est prête. Les fiches précédentes en cours ont été clôturées.";
     } else {
-        if (createFicheIfNotExists($visiteurId, $month)) {
-            $success = "La fiche du mois $month a été créée ou existe déjà.";
-        } else {
-            $errors[] = 'Impossible de créer la fiche. Veuillez réessayer plus tard.';
-        }
+        $errors[] = 'Impossible de créer la fiche. Veuillez réessayer plus tard.';
     }
 }
 
@@ -31,7 +34,7 @@ renderHeader('Tableau de bord - GSB', 'dashboard');
 <div style="display:flex; flex-wrap:wrap; gap:1.5rem;">
   <div style="flex:1 1 420px;">
     <h2>Créer une nouvelle fiche</h2>
-    <p>Vous pouvez créer une nouvelle fiche de frais pour un mois donné.</p>
+    <p>Créez la fiche de frais du mois en cours. La saisie n'est possible que sur une fiche « en cours ».</p>
     <?php if (!empty($errors)): ?>
       <div class="message error">
         <ul style="margin:0; padding-left:1.2rem;">
@@ -46,9 +49,10 @@ renderHeader('Tableau de bord - GSB', 'dashboard');
     <?php endif; ?>
 
     <form method="post" novalidate style="max-width:380px;">
+      <?php csrfField(); ?>
       <div class="form-group">
         <label for="new_month">Mois (AAAAMM)</label>
-        <input id="new_month" name="new_month" type="text" pattern="[0-9]{6}" placeholder="202602" required />
+        <input id="new_month" name="new_month" type="text" pattern="[0-9]{6}" value="<?php echo date('Ym'); ?>" required />
         <small style="color:#666;">Ex: 202602 pour février 2026.</small>
       </div>
       <button type="submit" class="btn">Créer la fiche</button>
