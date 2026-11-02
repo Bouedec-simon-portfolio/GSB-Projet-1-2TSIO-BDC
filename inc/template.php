@@ -41,6 +41,8 @@ function renderHeader(string $title, string $activePage = ''): void
     .message { padding:0.75rem 1rem; border-radius:6px; margin-bottom:1rem; }
     .message.error { background:#ffefef; border:1px solid #f1c0c0; color:#8a1f1f; }
     .message.success { background:#eef9ef; border:1px solid #b3d7b3; color:#1f5d1f; }
+    .message.warning { background:#fff8e6; border:1px solid #f0d58c; color:#7a5a00; }
+    .refusee { color:#8a1f1f; text-decoration:line-through; }
     .form-group { margin-bottom:1rem; }
     .form-group label { display:block; margin-bottom:0.25rem; font-weight:600; }
     .form-group input, .form-group select, .form-group textarea { width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; }
@@ -79,7 +81,9 @@ function renderHeader(string $title, string $activePage = ''): void
     <?php if (isAdmin()): ?>
       <a href="admin-fiches.php" class="<?php echo $activePage === 'admin' ? 'active' : ''; ?>" style="background:#c00; margin-left:auto;">Admin - Fiches</a>
     <?php endif; ?>
-    <a href="connexion.php" class="<?php echo $activePage === 'login' ? 'active' : ''; ?>">Connexion</a>
+    <?php if (!$user): ?>
+      <a href="connexion.php" class="<?php echo $activePage === 'login' ? 'active' : ''; ?>">Connexion</a>
+    <?php endif; ?>
   </nav>
   <main class="container" style="flex: 1;">
 <?php }

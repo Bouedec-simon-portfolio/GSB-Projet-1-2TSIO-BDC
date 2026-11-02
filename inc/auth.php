@@ -134,6 +134,47 @@ function login(string $login, string $password): bool
     return true;
 }
 
+/*
+ * Protection CSRF (Cross-Site Request Forgery)
+ * --------------------------------------------
+ * Un site malveillant pourrait envoyer un formulaire vers notre application
+ * à la place de l'utilisateur connecté. Pour l'empêcher, chaque formulaire
+ * contient un jeton secret stocké en session : si le jeton envoyé ne
+ * correspond pas, la requête est refusée.
+ */
+
+/**
+ * Retourne le jeton CSRF de la session (il est créé la première fois).
+ *
+ * @return string
+ */
+function csrfToken(): string
+{
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+/**
+ * Affiche le champ caché contenant le jeton, à placer dans chaque formulaire POST.
+ */
+function csrfField(): void
+{
+    echo '<input type="hidden" name="csrf_token" value="' . htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') . '" />';
+}
+
+/**
+ * Vérifie que le jeton envoyé par le formulaire est le bon.
+ *
+ * @return bool
+ */
+function csrfValide(): bool
+{
+    $jetonRecu = $_POST['csrf_token'] ?? '';
+    return is_string($jetonRecu) && hash_equals(csrfToken(), $jetonRecu);
+}
+
 /**
  * Déconnecte l'utilisateur courant.
  */
